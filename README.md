@@ -124,5 +124,112 @@ scan list
 latest scan
 ![latest scan](images/last.png)
 
+## Future Enhancements
+
+If more time and resources were available, the following improvements and features could be implemented:
+
+1. **Database Improvements**  
+   - Normalize the database to improve data integrity and reduce redundancy.
+   - Optimize queries for better performance with larger datasets.
+   - here is the how db looks
+   # Normalized Database Design
+
+This document describes the normalized design for the database, which eliminates redundancy and organizes the data into logical groupings.
+
+---
+
+## 1. Main Table: `scans`
+Stores general information about each scan.
+
+| Column          | Type          | Description                                     |
+|------------------|---------------|-------------------------------------------------|
+| `id`            | Integer       | Primary key (autoincrement).                   |
+| `ssn`           | String        | Unique identifier for the record.              |
+| `name`          | String        | Name associated with the record.               |
+| `upload_date`   | DateTime      | Timestamp of when the record was uploaded.     |
+
+---
+
+## 2. PII Table: `pii`
+Stores personally identifiable information (PII) associated with a scan.
+
+| Column          | Type          | Description                                     |
+|------------------|---------------|-------------------------------------------------|
+| `id`            | Integer       | Primary key (autoincrement).                   |
+| `scan_id`       | Integer       | Foreign key referencing `scans.id`.            |
+| `type`          | String        | Type of PII (e.g., `name`, `ssn`, `pan`).      |
+| `value`         | String        | The PII value.                                 |
+
+---
+
+## 3. PHI Table: `phi`
+Stores protected health information (PHI) associated with a scan.
+
+| Column          | Type          | Description                                     |
+|------------------|---------------|-------------------------------------------------|
+| `id`            | Integer       | Primary key (autoincrement).                   |
+| `scan_id`       | Integer       | Foreign key referencing `scans.id`.            |
+| `type`          | String        | Type of PHI (e.g., `medical_record_number`, `test_results`). |
+| `value`         | String        | The PHI value.                                 |
+
+---
+
+## 4. PCI Table: `pci`
+Stores payment card information (PCI) associated with a scan.
+
+| Column          | Type          | Description                                     |
+|------------------|---------------|-------------------------------------------------|
+| `id`            | Integer       | Primary key (autoincrement).                   |
+| `scan_id`       | Integer       | Foreign key referencing `scans.id`.            |
+| `value`         | String        | Credit card number or related PCI data.        |
+
+---
+
+## 5. Additional Info Table: `scan_metadata`
+Stores metadata about the counts of PII, PHI, and PCI in a scan.
+
+| Column          | Type          | Description                                     |
+|------------------|---------------|-------------------------------------------------|
+| `id`            | Integer       | Primary key (autoincrement).                   |
+| `scan_id`       | Integer       | Foreign key referencing `scans.id`.            |
+| `pii_count`     | Integer       | Count of PII items in the scan.                |
+| `phi_count`     | Integer       | Count of PHI items in the scan.                |
+| `pci_count`     | Integer       | Count of PCI items in the scan.                |
+
+---
+
+## Relationships
+- The `scans` table acts as the parent, with one-to-many relationships to the `pii`, `phi`, `pci`, and `scan_metadata` tables.
+- Foreign keys (`scan_id`) in the child tables ensure data integrity and establish relationships.
+
+---
+
+## Advantages of Normalization
+1. **Eliminates Redundancy:** Data is stored once and referenced as needed, reducing storage requirements.
+2. **Improves Data Integrity:** Foreign keys ensure valid relationships between tables.
+3. **Facilitates Flexibility:** Adding new data types or columns is simpler without affecting unrelated tables.
+4. **Optimizes Queries:** Targeted queries can retrieve specific data without scanning large, monolithic tables.
+
+---
+
+Would you like SQL scripts or an ER diagram to complement this normalized design?
+
+
+2. **File Type Support**  
+   - Extend support to additional file types, such as `.peg` images and advanced PDF structures.
+
+3. **Handling Multiple Records in a Single File**  
+   - Develop functionality to parse and handle files containing multiple records efficiently, allowing batch processing.
+
+4. **Enhanced User Experience**  
+   - Implement features like file upload progress indicators and detailed logs for user feedback.
+
+5. **Scalability and Deployment**  
+   - Transition from SQLite to a more scalable database like PostgreSQL or MySQL for production environments.
+   - Add support for horizontal scaling with distributed databases and optimized container configurations.
+
+These enhancements would make the application more robust, scalable, and user-friendly.
+
+
 
 
