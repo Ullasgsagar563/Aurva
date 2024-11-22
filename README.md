@@ -240,6 +240,9 @@ Would you like SQL scripts or an ER diagram to complement this normalized design
 
 These enhancements would make the application more robust, scalable, and user-friendly.
 
+# Bonus Points
+## Deployed using **Docker** for easy setup and scalability.
+
 
 # Code Quality Tools: Flake8 and Black
 
@@ -309,10 +312,6 @@ By using both tools together, you can ensure that your code is both error-free a
 # Running Tests for Flask Application
 
 This guide explains how to run the tests for the Flask application and provides an overview of the expected behavior during testing.
-
-## Prerequisites
-
-
 
 ## Setting up the Database
 Tests use a SQLite database for testing purposes, which will be created and cleaned up automatically during test runs. The application will use an in-memory database (sqlite:///test_database.db) for testing purposes to avoid affecting the production database.
