@@ -1,0 +1,7 @@
+Flask
+Flask-SQLAlchemy
+easyocr
+pandas
+numpy
+Pillow
+pdfplumber

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scans List</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .last-scan {
+            border: 2px solid #007bff;
+            padding: 15px;
+            background-color: #f8f9fa;
+            margin-bottom: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center">Scan Results</h1>
+
+        <!-- View All and Upload File Buttons -->
+        <div class="mb-3">
+            <a href="{{ url_for('list_scans') }}" class="btn btn-primary">View All Scans</a>
+            <a href="{{ url_for('home') }}" class="btn btn-success">Upload New File</a>
+        </div>
+
+        <!-- Last Scan Button -->
+        <button id="last-scan-button" class="btn btn-info mb-3">Show Last Scan</button>
+
+        <!-- Last Scan Details -->
+        <div id="last-scan-details" class="last-scan hidden">
+            <h4>Last Scan Information</h4>
+            <ul class="list-group">
+                <li class="list-group-item"><strong>SSN:</strong> <span id="last-scan-ssn"></span></li>
+                <li class="list-group-item"><strong>Name:</strong> <span id="last-scan-name"></span></li>
+                <li class="list-group-item"><strong>PII:</strong> <span id="last-scan-pii"></span></li>
+                <li class="list-group-item"><strong>PHI:</strong> <span id="last-scan-phi"></span></li>
+                <li class="list-group-item"><strong>PCI:</strong> <span id="last-scan-pci"></span></li>
+                <li class="list-group-item"><strong>Additional Info:</strong> <span id="last-scan-additional-info"></span></li>
+                <li class="list-group-item"><strong>Uploaded on:</strong> <span id="last-scan-upload-date"></span></li>
+            </ul>
+        </div>
+
+        <!-- List of All Scans -->
+        <h2 class="mt-4">All Scans</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>SSN</th>
+                    <th>Name</th>
+                    <th>PII</th>
+                    <th>PHI</th>
+                    <th>PCI</th>
+                    <th>Upload Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for scan in scans %}
+                    <tr>
+                        <td>{{ scan.ssn }}</td>
+                        <td>{{ scan.name }}</td>
+                        <td>{{ scan.pii }}</td>
+                        <td>{{ scan.phi }}</td>
+                        <td>{{ scan.pci }}</td>
+                        <td>{{ scan.upload_date }}</td>
+                        <td>
+                            <a href="{{ url_for('delete_scan', id=scan.id) }}" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Include Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // JavaScript to handle the "Show Last Scan" button click
+        document.getElementById('last-scan-button').addEventListener('click', function() {
+            // Fetch last scan details from the server
+            fetch('/last_scan')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        alert(data.message);  // Show an alert if no scan is found
+                    } else {
+                        // Display the last scan details
+                        document.getElementById('last-scan-ssn').textContent = data.ssn;
+                        document.getElementById('last-scan-name').textContent = data.name;
+                        document.getElementById('last-scan-pii').textContent = data.pii;
+                        document.getElementById('last-scan-phi').textContent = data.phi;
+                        document.getElementById('last-scan-pci').textContent = data.pci;
+                        document.getElementById('last-scan-additional-info').textContent = data.additional_info;
+                        document.getElementById('last-scan-upload-date').textContent = data.upload_date;
+
+                        // Show the last scan details div
+                        document.getElementById('last-scan-details').classList.remove('hidden');
+                    }
+                })
+                .catch(error => {
+                    alert('Error fetching last scan details.');
+                    console.error(error);
+                });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+NAME:ullas
+PAN: UYDEC1210S
+SSN: 898-45-2222
+Credit Card: 4111-5555-1111-1111
+Medical Record Number: 1076543222
+Test Results: negative for Influenza
+remarks:NA
