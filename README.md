@@ -1,32 +1,60 @@
-# Aurva
+
 # Aura Project
 
 ## Overview
-The Aura Project is a web application built using Flask, which processes various document types (images, PDFs, text, and CSV files) to extract sensitive information like PII, PHI, and PCI data. This information is classified and stored in a local SQLite database for further access and management.
+This project is a Flask-based web application designed to:
+- Upload and process various file formats (`.txt`, `.csv`).
+- Extract and classify data into categories such as **PII** (Personally Identifiable Information), **PHI** (Protected Health Information), and **PCI** (Payment Card Information).
+- Store the processed data in a database, allowing for record management, search functionality, and retrieval of the latest record.
+- Deployed using **Docker** for easy setup and scalability.
 
 ## Features
-- Upload multiple files at once.
-- Extract text from images, PDFs, and CSV files.
-- Classify extracted data into PII, PHI, and PCI categories.
-- View, search, and delete scan records from the database.
+
+1. **File Upload and Processing**:
+   - Supports uploading multiple files at once.
+   - Extracts text from images, PDFs, and CSV rows using OCR (`easyocr`) and text-parsing techniques.
+
+2. **Data Classification**:
+   - Categorizes extracted information into:
+     - **PII**: Name, SSN, PAN.
+     - **PHI**: Medical Record Numbers, Test Results.
+     - **PCI**: Credit Card Numbers.
+
+3. **Record Management**:
+   - Automatically updates records if the same **SSN** is uploaded again, ensuring no duplicate entries.
+   - Allows searching for records by **SSN**.
+   - Provides functionality to retrieve the latest uploaded record.
+
+4. **View and Delete Records**:
+   - View all records stored in the database via a user-friendly web interface.
+   - Delete individual records as required.
+
+5. **Dockerized Deployment**:
+   - The project is containerized using Docker.
+   - Includes a `Dockerfile` and `docker-compose.yml` for easy setup.
+   - Orchestrates the Flask application and database.
+
+---
 
 ## System Diagram
-![System Flowchart](./path_to_your_flowchart_image.png)
+![System Flowchart](images/system.png)
 
 ## Database Design
-The application uses an SQLite database with the following schema:
+The database contains a single table called `scan`, with the following structure:
 
-### `Scan` Table
-| Field            | Type    | Description                               |
-|------------------|---------|-------------------------------------------|
-| `id`             | Integer | Primary key, auto-incremented             |
-| `ssn`            | String  | Social Security Number (unique identifier)|
-| `name`           | String  | Name of the individual                    |
-| `pii`            | String  | Combined PII data                        |
-| `phi`            | String  | Combined PHI data                        |
-| `pci`            | String  | PCI data                                  |
-| `additional_info`| String  | Any unclassified or additional data      |
-| `upload_date`    | DateTime| Date and time of upload                   |
+| Column          | Type          | Description                                     |
+|------------------|---------------|-------------------------------------------------|
+| `id`            | Integer       | Primary key (autoincrement).                   |
+| `ssn`           | String        | Unique identifier for the record.              |
+| `name`          | String        | Name associated with the record.               |
+| `pii`           | String        | Combined PII information.                      |
+| `phi`           | String        | Combined PHI information.                      |
+| `pci`           | String        | Combined PCI information.                      |
+| `additional_info` | String      | Summary of PII, PHI, and PCI counts.           |
+| `upload_date`   | DateTime      | Timestamp of when the record was uploaded.     |
+
+---
+
 
 ## Setup Instructions
 
@@ -76,10 +104,18 @@ The application uses an SQLite database with the following schema:
    ```bash
    docker-compose up
    ```
+## Output Snapshot
 
-### Notes
-- Ensure that your file uploads are properly configured for the web app.
-- The application processes files like `.txt`, `.png`, `.jpg`, `.jpeg`, `.pdf`, and `.csv`.
+Here is a snapshot of the application output:
 
-## License
-(Add your license here, if applicable)
+![Running Docker](images/image.png)
+![uplode textfile](images/textfile.png)
+![scan list](images/testfileout.png)
+![uplode 2 file at a time](images/2textfile.png)
+![scan list](images/2fileout.png)
+![uplode csv](images/csv%20file.png)
+![scan list](images/csvfile%20out.png)
+![latest scan](images/last.png)
+
+
+
