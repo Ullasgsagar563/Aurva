@@ -107,14 +107,21 @@ The database contains a single table called `scan`, with the following structure
 ## Output Snapshot
 
 Here is a snapshot of the application output:
-
+Running Docker
 ![Running Docker](images/image.png)
+uplode textfile
 ![uplode textfile](images/textfile.png)
+scan list
 ![scan list](images/testfileout.png)
+uplode 2 file at a time
 ![uplode 2 file at a time](images/2textfile.png)
+scan list
 ![scan list](images/2fileout.png)
+uplode csv
 ![uplode csv](images/csv%20file.png)
+scan list
 ![scan list](images/csvfile%20out.png)
+latest scan
 ![latest scan](images/last.png)
 
 
