@@ -54,6 +54,16 @@ The database contains a single table called `scan`, with the following structure
 | `upload_date`   | DateTime      | Timestamp of when the record was uploaded.     |
 
 ---
+## Explanation of the Schema:
+
+- id: A unique identifier for each record.
+- name: The full name of the individual.
+- ssn: The Social Security Number, masked or hashed for security.
+- pan: The Permanent Account Number, masked or hashed for security.
+- medical_record_number: The unique identifier for the medical record.
+- test_results: The results of the medical test.
+- credit_card_number: The credit card number, masked or tokenized for security.
+- upload_date: The timestamp when the record was uploaded.
 
 
 ## Setup Instructions
@@ -231,5 +241,125 @@ Would you like SQL scripts or an ER diagram to complement this normalized design
 These enhancements would make the application more robust, scalable, and user-friendly.
 
 
+# Code Quality Tools: Flake8 and Black
+
+## 1. Flake8
+Flake8 is a linter that checks your Python code for various issues related to:
+
+- **Syntax Errors**: Ensures your code is syntactically correct (e.g., unmatched parentheses, misspelled keywords).
+- **Style Violations**: Enforces PEP 8, Python's style guide (e.g., indentation errors, line length).
+- **Code Complexity**: Flags overly complex code that might be hard to maintain or understand.
+- **Unused Imports/Variables**: Detects unused code, such as imports or variables that are declared but not used.
+
+### How to use Flake8:
+1. **Install Flake8**:
+    ```bash
+    pip install flake8
+    ```
+
+2. **Run the Linter**:
+    In your project directory, run:
+    ```bash
+    flake8 .
+    ```
+    This will check all Python files in the current directory and subdirectories for any issues.
+
+3. **Fix Issues**:
+    Flake8 will output a list of issues, including the line numbers where problems were found. You'll need to address these issues manually to ensure your code is clean and follows the style guidelines.
+
+## 2. Black
+Black is an automatic code formatter for Python. It formats your code to follow consistent and strict formatting rules, primarily based on PEP 8 but with additional features. Its goal is to make code formatting consistent and reduce the need for code style debates among teams.
+
+### Features of Black:
+- **Auto-formatting**: Reformats your code to match a specific style (e.g., 88-character line length, spaces around operators, etc.).
+- **No Configuration**: Black follows a set of defaults and doesn't require configuring style rules, making it easy to use for teams.
+
+### How to use Black:
+1. **Install Black**:
+    ```bash
+    pip install black
+    ```
+
+2. **Run Black**:
+    In your project directory, run:
+    ```bash
+    black .
+    ```
+    Black will automatically format all the Python files in your project, making your code consistent.
+
+## 3. Combining Flake8 and Black
+- **Flake8** is useful for detecting issues and maintaining a clean codebase by catching mistakes.
+- **Black** is great for automatically formatting your code to ensure consistent style.
+
+### Example Workflow:
+1. **Run Flake8**:
+    ```bash
+    flake8 .
+    ```
+    - Review the output and fix any linting issues manually (e.g., correct indentation, remove unused imports).
+
+2. **Run Black**:
+    ```bash
+    black .
+    ```
+    - This will automatically format your code.
+
+By using both tools together, you can ensure that your code is both error-free and follows a consistent style.
+"""
+# Running Tests for Flask Application
+
+This guide explains how to run the tests for the Flask application and provides an overview of the expected behavior during testing.
+
+## Prerequisites
 
 
+
+## Setting up the Database
+Tests use a SQLite database for testing purposes, which will be created and cleaned up automatically during test runs. The application will use an in-memory database (sqlite:///test_database.db) for testing purposes to avoid affecting the production database.
+
+## Running Tests
+To run the tests, execute the following command in your terminal:
+
+```bash
+Copy code
+pytest tests/test_app.py
+This will run the tests and display a summary of the results in the terminal.
+
+Expected Test Output
+When running the tests, you should see output similar to the following:
+
+bash
+Copy code
+============================= test session starts ==============================
+collected 8 items
+
+tests/test_app.py .......                                             [100%]
+
+============================= 8 passed in 1.23s ==============================
+```
+If any test fails, the output will show which test failed, along with the relevant error message. You will also see the stack trace to help debug the issue.
+
+#Handling Database Errors
+If you encounter issues such as sqlite3.IntegrityError, it may be due to unique constraints in the database or conflicts between test cases. Ensure that:
+
+Each test case is properly isolated.
+Any data added to the database during tests is cleaned up after each test.
+Handling DetachedInstanceError
+In case you encounter the DetachedInstanceError, it indicates that you're trying to access an object outside of the session context. To resolve this, make sure database operations are performed within an app context.
+
+Example of fixing:
+python
+Copy code
+with app.app_context():
+    # Your DB operations go here
+Test Cases Overview
+Here is a summary of the tests implemented in test_app.py:
+
+Home Route (test_home): Verifies that the home route returns the correct status and displays the "Upload File" text.
+Upload File Route (Valid File) (test_upload_text_file): Tests the file upload route with a valid .txt file. Checks for a redirect to the /scans page.
+Upload File Route (Missing File) (test_upload_missing_file): Ensures that the application handles a case where no file is uploaded.
+List Scans (test_list_scans): Verifies the /scans route displays scans stored in the database.
+Search Scan (Valid SSN) (test_search_scan_valid): Tests the search functionality by searching for a scan with a valid SSN.
+Search Scan (Invalid SSN) (test_search_scan_invalid): Verifies the behavior when searching for a non-existing scan.
+Delete Scan (test_delete_scan): Ensures that scans can be deleted from the database and no longer exist.
+Get Last Scan (test_last_scan): Verifies that the last scan added to the database can be retrieved.
