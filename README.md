@@ -355,11 +355,11 @@ with app.app_context():
 Test Cases Overview
 Here is a summary of the tests implemented in test_app.py:
 
-Home Route (test_home): Verifies that the home route returns the correct status and displays the "Upload File" text.
-Upload File Route (Valid File) (test_upload_text_file): Tests the file upload route with a valid .txt file. Checks for a redirect to the /scans page.
-Upload File Route (Missing File) (test_upload_missing_file): Ensures that the application handles a case where no file is uploaded.
-List Scans (test_list_scans): Verifies the /scans route displays scans stored in the database.
-Search Scan (Valid SSN) (test_search_scan_valid): Tests the search functionality by searching for a scan with a valid SSN.
-Search Scan (Invalid SSN) (test_search_scan_invalid): Verifies the behavior when searching for a non-existing scan.
-Delete Scan (test_delete_scan): Ensures that scans can be deleted from the database and no longer exist.
-Get Last Scan (test_last_scan): Verifies that the last scan added to the database can be retrieved.
+- Home Route (test_home): Verifies that the home route returns the correct status and displays the "Upload File" text.
+- Upload File Route (Valid File) (test_upload_text_file): Tests the file upload route with a valid .txt file. Checks for a redirect to the /scans page.
+- Upload File Route (Missing File) (test_upload_missing_file): Ensures that the application handles a case where no file is uploaded.
+- List Scans (test_list_scans): Verifies the /scans route displays scans stored in the database.
+- Search Scan (Valid SSN) (test_search_scan_valid): Tests the search functionality by searching for a scan with a valid SSN.
+- Search Scan (Invalid SSN) (test_search_scan_invalid): Verifies the behavior when searching for a non-existing scan.
+- Delete Scan (test_delete_scan): Ensures that scans can be deleted from the database and no longer exist.
+- Get Last Scan (test_last_scan): Verifies that the last scan added to the database can be retrieved.
